@@ -36,3 +36,8 @@ time_with_baby <- function(bwt, wt)
 	overlap <- baby_time - lubridate::hour(lubridate::as.period(intersect(bwt, wt), "hours"))
 	return(overlap)
 }
+
+
+bwt <- baby_awake_time("07:00", "19:00", "2018-08-25", 52)
+wt <- work_time("08:45", "17:15", "2018-08-25", c("Tue", "Wed", "Thu", "Fri"), 52)
+time_with_baby(bwt, wt)
