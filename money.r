@@ -32,13 +32,15 @@ salary_calc <- function(base_salary, annual_increment, duration)
 }
 
 
-statutary_parental_pay <- function(rate, weeks_from_start, time_on_leave, option)
+statutory_parental_pay <- function(rate=140.98, weeks_from_start, time_on_leave, option)
 {
 	duration <- time_on_leave + weeks_from_start
-	print(duration)
-	mod <- parental_leave_salary_model(option, duration)
-	index <- as.numeric(1:duration %in% c(weeks_from_start:(weeks_from_start+time_on_leave)))
+	# print(duration)
+	mod <- parental_leave_salary_model(option)
+	index <- as.numeric(mod$weeks %in% c(weeks_from_start:(weeks_from_start+time_on_leave)))
+	# print(index)
 	mod$income <- as.numeric(mod$spp) * rate * index
+	# print(mod)
 	return(mod$income)
 }
 
@@ -51,9 +53,30 @@ salary_loss <- function(salary, weeks_from_start, time_on_leave, duration, optio
 	return(mod$income)
 }
 
+# account for taxes and other contributions? Or ask for net salary?
+# my net salary: 28128
+# gib's net salary: 34704 (excluding Wellcome top up)
+
+# have to sort out pension contributions - can't pay from salary exchange scheme after end of SMP period
 
 
-salary <- salary_calc(52000, 0.02, 52*3)
-spp <- statutary_parental_pay(148, 26, 52*3-26, 2)
-salary_loss(salary, 26, 26, 52*3, 1)
+jo_salary <- salary_calc(28182, 0.02, 52)
+jo_spp1 <- statutory_parental_pay(140.98, 0, 26, 1)
+jo_reduction1 <- salary_loss(jo_salary, 0, 26, 52, 1)
+jo_spp2 <- statutory_parental_pay(140.98, 0, 26, 2)
+jo_reduction2 <- salary_loss(jo_salary, 0, 26, 52, 2)
+
+total1 <- jo_salary + jo_reduction1 + jo_spp1
+total2 <- jo_salary + jo_reduction2 + jo_spp2
+sum(total1)
+sum(total2)
+
+# option 1 is better
+
+gib_salary <- salary_calc(34704, 0.02, 52)
+gib_spp <- statutory_parental_pay(140.98, 26, 26, 1)
+gib_reduction <- salary_loss(gib_salary, 26, 26, 52, 1)
+
+totalg <- gib_salary + gib_spp + gib_reduction
+sum(totalg)
 

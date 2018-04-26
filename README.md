@@ -54,7 +54,7 @@ return
 
 - vector of weekly salary income
 
-### `statutary_parental_pay`
+### `statutory_parental_pay`
 
 Parameters
 
