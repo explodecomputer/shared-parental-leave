@@ -32,7 +32,7 @@ salary_calc <- function(base_salary, annual_increment, duration)
 }
 
 
-statutory_parental_pay <- function(rate=140.98, weeks_from_start, time_on_leave, option)
+statutory_parental_pay_deprecated <- function(rate=140.98, weeks_from_start, time_on_leave, option)
 {
 	duration <- time_on_leave + weeks_from_start
 	# print(duration)
@@ -45,11 +45,36 @@ statutory_parental_pay <- function(rate=140.98, weeks_from_start, time_on_leave,
 }
 
 
-salary_loss <- function(salary, weeks_from_start, time_on_leave, duration, option)
+statutory_parental_pay <- function(nt, option, rate=140.98)
+{
+	duration <- nrow(nt)
+	# print(duration)
+	mod <- parental_leave_salary_model(option, duration)
+	# index <- as.numeric(mod$weeks %in% c(weeks_from_start:(weeks_from_start+time_on_leave)))
+	index <- as.numeric(nt$on_leave != "None" & mod$spp)
+	# print(index)
+	mod$income <- as.numeric(mod$spp) * rate * index
+	# print(mod)
+	return(mod$income)
+}
+
+salary_loss_deprecated <- function(salary, weeks_from_start, time_on_leave, duration, option)
 {
 	mod <- parental_leave_salary_model(option, length(salary))
 	index <- as.numeric(1:duration %in% c(weeks_from_start:(weeks_from_start+time_on_leave)))
 	mod$income <- mod$drop * salary * -1 * index
 	return(mod$income)
 }
+
+
+salary_loss <- function(salary1, salary2, nt, option)
+{
+	stopifnot(length(salary1) == length(salary2))
+	stopifnot(length(salary1) == nrow(nt))
+	mod <- parental_leave_salary_model(option, length(salary1))
+	mod$income1 <- mod$drop * salary1 * -1 * as.numeric(nt$on_leave == "p1")
+	mod$income2 <- mod$drop * salary2 * -1 * as.numeric(nt$on_leave == "p2")
+	return(mod)
+}
+
 
