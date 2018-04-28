@@ -74,3 +74,12 @@ nursery_time(jo, gib)
 
 wrapper <- function(p1_time, p2_time, salary1_base, salary2_base, option)
 
+
+###
+
+
+parse_daytime("Mon-Fri 09:00-17:00")
+parse_daytime("Mon,Wed,Fri 09:00-17:00")
+parse_daytime("Mon-Wed,Fri 09:00-17:00")
+
+
