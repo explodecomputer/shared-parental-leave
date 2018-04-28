@@ -29,7 +29,15 @@ work_time <- function(leave_time, home_time, start_date, work_days, duration)
 }
 
 
-
+#' Calculate time with baby for one parent
+#' 
+#' Some description
+#' 
+#' @param bwt output from \code{baby_awake_time}
+#' @param wt output from \code{work_time}
+#' 
+#' @export
+#' @return vector
 time_with_baby <- function(bwt, wt)
 {
 	baby_time <- lubridate::hour(lubridate::as.period(bwt, "hours"))
@@ -37,7 +45,3 @@ time_with_baby <- function(bwt, wt)
 	return(overlap)
 }
 
-
-bwt <- baby_awake_time("07:00", "19:00", "2018-08-25", 52)
-wt <- work_time("08:45", "17:15", "2018-08-25", c("Tue", "Wed", "Thu", "Fri"), 52)
-time_with_baby(bwt, wt)

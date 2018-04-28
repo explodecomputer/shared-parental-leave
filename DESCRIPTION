@@ -1,0 +1,14 @@
+Package: babytime
+Title: Shared parental leave calculator
+Version: 0.0.0.9000
+Authors@R: c(
+	person("Gibran", "Hemani", email = "g.hemani@bristol.ac.uk", role = c("aut", "cre")),
+	person("Josephine", "Walker", email = "j.g.walker@bristol.ac.uk", role = c("aut", "cre")))
+Description: Calculate the financial and time outcomes for different amounts of parental leave and childcare
+Depends: R (>= 3.3.0), 
+	dplyr, 
+	lubridate
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
