@@ -14,8 +14,8 @@ wp_baby <- baby_time(jo_wp)
 wp <- wp_overlap(jo_wp, gib_wp, wp_baby)
 sw <- summarise_weeks(jo_wp, gib_wp)
 
-jo_salary <- salary_calc(34704, 0.02, gib_wp)
-gib_salary <- salary_calc(28182, 0.02, jo_wp)
+gib_salary <- salary_calc(34704, 0.02, gib_wp)
+jo_salary <- salary_calc(28182, 0.02, jo_wp)
 
 sp <- statutory_parental_pay(sw, 1)
 sl <- salary_loss(jo_salary$income, gib_salary$income, sw, 1)
