@@ -8,6 +8,7 @@
 2. How much time will be spent with the baby?
 3. Can we use this to make decisions, or assign a 'value' to baby time?
 
+**Note from Neil:** Tax deductions for nursery available
 
 **Scenarios:**
 
@@ -106,3 +107,5 @@ day 4 - 9am-5pm
 - time_with_baby
     - baby_awake_time
     - work_time
+
+
