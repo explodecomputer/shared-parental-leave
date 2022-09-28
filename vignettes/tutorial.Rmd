@@ -1,0 +1,80 @@
+---
+title: "Using the babytime R package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using the babytime R package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(babytime)
+```
+
+This package tries to map out how shared parental leave, and later on nursery costs impact net income. It also tries to map out time spent by each parent with the baby. Look at the `babytime` function to see how it does this, but to just get going you need to:
+
+1. Specify your weekly plan for the duration to be calculated (e.g. 1 year of shared parental leave + 2 years of working with the child in nursery)
+2. Do this for both parents
+3. Plug the weekly plans into the `babytime` function.
+
+# Draw up weekly plans
+
+An example of generating a weekly plan for one parent is here:
+
+```{r}
+parent1_wp <- work_plan("2018-08-25",   # Baby's due date
+	on_leave(26),                         # 6 months on leave
+	working(26, "Mon-Fri 09:00-17:00"),   # 6 months working full time
+	working(104, "Mon-Thu 09:00-17:00")   # 6 months working mon-thu
+)
+parent1_wp
+```
+
+And a similar plan can be set up for the other parent:
+
+```{r}
+parent2_wp <- work_plan("2018-08-25",   # Baby's due date
+	working(26, "Mon-Fri 09:00-17:00"),   # 6 months working full time
+	on_leave(26),                         # 6 months on leave
+	working(104, "Mon-Thu 09:00-17:00")   # 6 months working tue-fri
+)
+```
+
+Based on these timings, the package is going to calculate which days the baby will have to be in nursery due to both parents being at work. So it assumes that when parents aren't at work or on leave the baby is in nursery. Run it here:
+
+```{r}
+out <- babytime(parent1_wp = parent1_wp,
+         parent2_wp = parent2_wp,
+         baby_waking_time = "07:00",
+         baby_sleeping_time = "19:00",
+         parental_leave_option = 1,
+         statutory_weekly_pay = 156.66,
+         hourly_nursery_rate = 8.75,
+         parent1_annual_salary = 35000,
+         parent2_annual_salary = 32000,
+         annual_salary_increment = 0.02
+)
+```
+
+This will spit out a lot of tables. Look at the help page for `babytime` to see what those tables are. But they're summarised in two plots. First, a plot of weekly earnings:
+
+```{r}
+out$earnings_plot
+```
+
+Second, a plot of hours per week spent with the baby:
+
+```{r}
+out$babytime_plot
+```
+```{r}
+sessionInfo()
+```
+

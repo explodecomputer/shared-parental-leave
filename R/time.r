@@ -1,3 +1,9 @@
+#' Parse day time string
+#' 
+#' @param x A string such as "Mon-Fri 09:00-17:00" or "Mon,Tue,Wed,Fri 09:00-13:00". Try not to take too many liberties with it, it's not completely comprehensive.
+#' 
+#' @return data frame
+#' @export
 parse_day_time <- function(x)
 {
 	words <- strsplit(x, split=" ")[[1]]
@@ -37,6 +43,13 @@ parse_day_time <- function(x)
 	return(out)
 }
 
+#' Specify a working period
+#' 
+#' @param weeks Number of weeks for which this period applies
+#' @param ... The weekly schedule as a string e.g. "Mon-Fri 09:00-17:00" or "Mon,Tue,Wed,Fri 09:00-13:00" that is parsed by \code{parse_day_time}
+#' 
+#' @return data frame
+#' @export
 working <- function(weeks, ...)
 {
 	l <- list(...)
@@ -54,6 +67,12 @@ working <- function(weeks, ...)
 	return(dplyr::bind_rows(l2))
 }
 
+#' Specify a period on shared parental leave
+#' 
+#' @param weeks Number of weeks for which this period applies
+#' 
+#' @return data frame
+#' @export
 on_leave <- function(weeks)
 {
 	a <- expand.grid(days=c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"), week=1:weeks) 
@@ -63,6 +82,13 @@ on_leave <- function(weeks)
 	return(a)
 }
 
+#' Generate working schedule table
+#'
+#' @param start_date First date for table e.g. expected baby's due date
+#' @param ... A list of working or leave periods. e.g. \code{on_leave(26)} signifies 26 weeks of leave, or \code{working(104, "Mon-Thu 09:00-17:00")} signifies 104 weeks of working Monday to Thursday 9-5.
+#'
+#' @return Data frame
+#' @export
 work_plan <- function(start_date, ...)
 {
 	l <- list(...)
